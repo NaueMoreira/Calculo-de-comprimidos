@@ -8,15 +8,12 @@
   </head>
   <body>
     <header>
-      <h1>💊Calculo de Dispensação de Comprimidos!💊</h1>
+      <h1>💊Cálculo de Dispensação de Comprimidos!💊</h1>
     </header>
     <section>
       <div id="caixa-calculo">
         
-        <p>Digite o principio ativo do medicamento:<br><br>
-        <input type="text" id="nomeMedicamento" placeholder="Ex:Pregabalina...">
-        </p><br>
-        <p>Qual o tipo de receituário?</p><br>
+        <p>Qual é o tipo de receituário?</p><br>
         <select id="receituario">
         <option value="">Selecione</option>
         <option value="amarela">Amarela</option>
@@ -24,10 +21,13 @@
           <option value="branca">Branca</option>
         <option value="branca-antibiotico">Branca Antibiotico</option>
         <option value="branca-psicotropico">Branca Psicotropico</option>
-        </select></p><br><br>
-        <p>Quantos comprimidos o paciente toma por dia?<br><br>
+        </select></p><br><br> 
+        <p>Digite o princípio ativo do medicamento:<br><br>
+        <input type="text" id="nomeMedicamento" placeholder="Ex: Pregabalina...">
+        </p><br>
+        <p>Quantos comprimidos o paciente utiliza por dia ?<br><br>
         <input type="number" name="medicamento" id="medicamento"></p><br>
-        <p>O medicamento e de uso continuo ou em dias alternados?</p><br>
+        <p>O medicamento é de uso contínuo ou em dias alternados?</p><br>
         <input type="radio" name="tipo-de-uso" id="uso-continuo" value="uso-continuo">
         <label for="uso-continuo">Uso Continuo</label><br><br>
         <input type="radio" name="tipo-de-uso" id="dias-limitados" value="dias-alternados">
