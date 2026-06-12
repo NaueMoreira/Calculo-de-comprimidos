@@ -11,8 +11,15 @@ body{
   align-items: auto;
   padding:20px;
 }
+
+#caixa-informativa{
+  background: white;
+  border-radius: 15px;
+  border: solid 5px #057f97;
+  box-shadow: 0px 0px 10px #035d6e;
+}
 #caixa-calculo{
-  background: white !important;
+  background: white;
   color:black;
   text-align: center;
   padding:15px ;
@@ -22,7 +29,7 @@ body{
   font-size: 16px;
 }
 section{
-  background-color: white;
+  background-color: rgb(255, 255, 255);
   border-radius:15px;
   text-align: center;
   width: 85%;
@@ -31,41 +38,41 @@ section{
   font-size:20px;
   align-content: center;
   margin: 40px auto;
+
 }
 
 footer{
   color:white;
 }
-input#dias{
+input#por-quantos-dias{
   border:solid 2px #06afd1 ;
+  border-radius: 10px;
   background:#0fd7ff ;
 }
 input#medicamento{
   border:solid 2px #06afd1;
+  border-radius: 10px;
   background:#0fd7ff ;
 }
-input#receituario{
+#receituario{
   border:solid 2px #06afd1;
+  border-radius: 10px;
   background:#0fd7ff ;
 }
 input#nomeMedicamento{
   border:solid 2px #06afd1;
+  border-radius: 10px;
   background:#0fd7ff ;
 }
 header{
   color:white;
   font-style: italic;
 }
-#c{
+#botao-calcular{
   background:#06afd1 ;
   border:solid #0fd7ff 3px;
   width: 100px;
   height: 25px;
   border-radius: 20px;
   color:white;
-}
-#receituario{
-  background:#06afd1 ;
-  border:solid #0fd7ff 3px;
-  color: white;
 }
