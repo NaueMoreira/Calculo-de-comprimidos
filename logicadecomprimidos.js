@@ -1,3 +1,48 @@
+//lista de antibioticos
+
+const antibioticos = [
+  "amoxicilina",
+  "ampicilina",
+  "penicilina benzatina",
+  "oxacilina",
+  "dicloxacilina",
+  "amoxicilina + clavulanato",
+  "Cefalexina",
+  "Cefadroxila",
+  "Cefuroxima",
+  "Ceftriaxona",
+  "Cefepime",
+  "Ceftazidima",
+  "Azitromicina",
+  "Claritromicina",
+  "Eritromicina",
+  "Espiramicina",
+  "Ciprofloxacino",
+  "Levofloxacino",
+  "Moxifloxacino",
+  "Norfloxacino",
+  "Ofloxacino",
+  "Doxiciclina",
+  "Minociclina",
+  "Tetraciclina",
+  "Sulfametoxazol + Trimetoprima",
+  "Sulfadiazina",
+  "Clindamicina",
+  "Lincomicina",
+  "Metronidazol",
+  "Secnidazol",
+  "Tinidazol",
+  "Gentamicina",
+  "Amicacina",
+  "Neomicina",
+  "Tobramicina",
+  "Nitrofurantoína",
+  "Fosfomicina",
+  "Linezolida",
+  "Rifampicina",
+  "Cloranfenicol"
+]
+
 
  // Lista de medicamentos que permitem até 180 dias mesmo com receita branca
     const medicamentosParaAte180Dias = [
@@ -36,6 +81,26 @@
           .normalize("NFD")
           .replace(/[\u0300-\u036f]/g, "")
           .toLowerCase();
+      }
+
+      // Detecta se o nome fornecido corresponde a um antibiótico da lista
+      function detectarAntibiotico(nome) {
+        const nomeN = normalizarTexto(nome);
+        // comparações diretas e por substring
+        for (let ab of antibioticos) {
+          const abN = normalizarTexto(ab);
+          if (nomeN === abN) return ab;
+          if (nomeN.includes(abN)) return ab;
+          if (abN.includes(nomeN)) return ab;
+        }
+        // tentativa por tokens (palavras) para corresponder termos parciais
+        const tokens = nomeN.split(/\s+/).filter(Boolean);
+        for (let ab of antibioticos) {
+          const abN = normalizarTexto(ab);
+          const abTokens = abN.split(/\s+/).filter(Boolean);
+          if (tokens.some(t => t.length > 2 && abTokens.includes(t))) return ab;
+        }
+        return null;
       }
 
       function atualizarCampoDias() {
@@ -87,7 +152,7 @@
 
         const nomeOriginal = campoNome.value.trim();
         const comprimidosPorDia = Number(campoComprimidosPorDia.value);
-        const tipoReceita = selectReceita.value.trim().toLowerCase();
+        // `tipoReceita` será obtido após possível auto-deteccao (veja abaixo)
 
         const radioSelecionado = document.querySelector(
           'input[name="tipo-de-uso"]:checked'
@@ -114,15 +179,28 @@
             "❌ Informe corretamente quantos comprimidos por dia (número > 0).";
           return;
         }
+        
+
+        // Normaliza o nome para comparação
+        const nomeNormalizado = normalizarTexto(nomeOriginal);
+
+        // Detecta antibiótico e, se identificado, ajusta automaticamente o tipo de receituário
+        let avisoAuto = "";
+        const antibioticoDetectado = detectarAntibiotico(nomeOriginal);
+        if (antibioticoDetectado) {
+          // força o select para a opção específica de antibiótico (o usuário pode alterar manualmente)
+          selectReceita.value = "branca-antibiotico";
+          avisoAuto = `🔎 Medicamento identificado como antibiótico: <strong>${antibioticoDetectado}</strong>. Receituário ajustado automaticamente para <strong>branca-antibiotico</strong>.`;
+        }
+
+        const tipoReceita = selectReceita.value.trim().toLowerCase();
+
         const tiposValidos = ["amarela", "azul", "branca", "branca-antibiotico", "branca-psicotropico"];
         if (!tiposValidos.includes(tipoReceita)) {
           resultadoTratamento.innerHTML =
             "❌ Selecione o tipo de receituário: <strong>Amarela</strong>, <strong>Azul</strong> ou <strong>Branca</strong>.";
           return;
         }
-
-        // Normaliza o nome para comparação
-        const nomeNormalizado = normalizarTexto(nomeOriginal);
 
         // Define limite apenas para casos de USO CONTÍNUO (conforme sua regra)
         let limiteDias = null;
@@ -149,7 +227,7 @@
 
           // Resultado quando é uso contínuo: aplicamos o limite
           const totalComprimidos = comprimidosPorDia * limiteDias;
-          resultadoTratamento.innerHTML = `✅ <strong>Uso contínuo</strong> — receituário <strong>${tipoReceita}</strong>: pode ser dispensado até <strong>${limiteDias} dias</strong>.<br>
+          resultadoTratamento.innerHTML = (avisoAuto ? avisoAuto + "<br><br>" : "") + `✅ <strong>Uso contínuo</strong> — receituário <strong>${tipoReceita}</strong>: pode ser dispensado até <strong>${limiteDias} dias</strong>.<br>
           Quantidade a dispensar (máximo): <strong>${totalComprimidos}</strong> comprimidos.`;
           return;
         }
@@ -163,7 +241,5 @@
         }
 
         const totalComprimidos = comprimidosPorDia * diasReceita;
-        resultadoTratamento.innerHTML =
-        resultadoTratamento.innerHTML =
-  `🧑🏻‍⚕️Médico estipulou <strong>${diasReceita} dias</strong>. Quantidade a dispensar: <strong>${totalComprimidos}</strong> comprimidos.`;
+        resultadoTratamento.innerHTML = (avisoAuto ? avisoAuto + "<br><br>" : "") + `🧑🏻‍⚕️Médico estipulou <strong>${diasReceita} dias</strong>. Quantidade a dispensar: <strong>${totalComprimidos}</strong> comprimidos.`;
       };
