@@ -1,48 +1,77 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-  <head>
+
+<head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="calculodecps.css">
     <title>Cálculo de Dispensação de Comprimidos</title>
-  </head>
-  <body>
+</head>
+
+<body>
     <header>
-      <h1>💊Cálculo de Dispensação de Comprimidos!💊</h1>
+        <h1>💊 Cálculo de Dispensação de Comprimidos💊</h1>
     </header>
+
     <section>
-      <div id="caixa-informativa">
-      <div id="caixa-calculo">
-        <p>Qual é o tipo de receituário?</p><br>
-        <select id="receituario">
-        <option value="">Selecione</option>
-        <option value="amarela">Amarela</option>
-        <option value="azul">Azul</option>
-        <option value="branca">Branca</option>
-        </select></p><br><br> 
-        <p>Digite o princípio ativo do medicamento:<br><br>
-        <input type="text" id="nomeMedicamento" placeholder="Ex: Pregabalina...">
-        </p><br>
-        <p>Quantos comprimidos o paciente utiliza por dia ?<br><br>
-        <input type="number" name="medicamento" id="medicamento"></p><br>
-        <p>O medicamento é de uso contínuo ou em dias alternados?</p><br>
-        <input type="radio" name="tipo-de-uso" id="uso-continuo" value="uso-continuo">
-        <label for="uso-continuo">Uso Continuo</label><br><br>
-        <input type="radio" name="tipo-de-uso" id="dias-limitados" value="medico-estipulou">
-        <label for="dias-limitados">Medico estipulou dias </label><br><br>
-        <p>Por quantos dias o paciente tomara o medicameto?<br><br>
-        <input type="number" name="por-quantos-dias" id="por-quantos-dias"><br><br>
-        
-        <input type="button" id="botao-calcular" value="Calcular">
-      </div>
-      <div id="caixa-resultado">
-        A quantidade de comprimidos a serem dispençados aparecera aqui!
-      </div><br>
-      </div>
-    </section><br>
+        <div id="caixa-calculo" class="calc-box">
+            <p>Digite o princípio ativo do medicamento:</p>
+            <input type="text" id="nomeMedicamento" class="form-input" placeholder="Ex: Pregabalina...">
+
+            <p class="form-label">Qual o tipo de receituário? <span class="required"></span></p>
+            <select id="receituario" class="form-select">
+                <option value="">Selecione</option>
+                <option value="amarela">Amarela</option>
+                <option value="azul">Azul</option>
+                <option value="branca">Branca</option>
+                <option value="branca-antibiotico">Branca Antibiótico</option>
+                <option value="branca-psicotropico">Branca Psicotrópico</option>
+            </select>
+            <div id="info-categoria-receita"></div>
+
+            <p class="form-label">Quantos comprimidos o paciente toma por dia? <span class="required"></span></p>
+            <input type="number" name="medicamento" id="medicamento" class="form-input" min="0" step="0.5" placeholder="Ex: 1, 2, 0.5...">
+
+            <p class="form-label">O medicamento é de uso contínuo ou em dias alternados?</p>
+            <div class="radio-group">
+                <div class="radio-option">
+                    <input type="radio" name="tipo-de-uso" id="uso-continuo" value="uso-continuo" checked>
+                    <label for="uso-continuo">Uso Contínuo</label>
+                </div>
+                <div class="radio-option">
+                    <input type="radio" name="tipo-de-uso" id="dias-limitados" value="dias-alternados">
+                    <label for="dias-limitados">Médico estipulou dias</label>
+                </div>
+            </div>
+
+            <p class="form-label">Por quantos dias o paciente tomará o medicamento? <span class="required"></span></p>
+            <input type="number" name="por-quantos-dias" id="por-quantos-dias" class="form-input" min="1" placeholder="Ex: 30, 60, 90...">
+
+            <button id="c" class="btn btn-primary btn-lg btn-full" onclick="calcular()">Calcular Quantidade</button>
+        </div>
+
+        <div id="caixa-resultado">
+            <!-- O resultado será inserido aqui pelo JavaScript -->
+            <div class="result-box" style="display: none;">
+                <h3>📋 Resultado do Cálculo</h3>
+                <div class="result-value" id="resultado-valor">0</div>
+                <p style="color: var(--text-secondary); margin-top: var(--space-2);">comprimidos a serem dispensados</p>
+                <div class="result-details" id="resultado-detalhes"></div>
+            </div>
+            <p style="text-align: center; color: var(--text-muted); padding: var(--space-8);" id="mensagem-inicial">
+                A quantidade de comprimidos a serem dispensados aparecerá aqui após o cálculo.
+            </p>
+        </div>
+    </section>
+
     <footer>
-      ©Nauê Moreira
+        © Nauê Moreira
     </footer>
+
     <script src="./logicadecomprimidos.js"></script>
-  </body>
+</body>
+
 </html>
